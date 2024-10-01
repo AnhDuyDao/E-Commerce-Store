@@ -74,10 +74,12 @@ export const login = async (req, res) => {
          setCookies(res, accessToken, refreshToken);
 
          res.status(201).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
+            user: {
+               _id: user._id,
+               name: user.name,
+               email: user.email,
+               role: user.role,
+            }, message: "Logged in successfully"
          });
       } else {
          res.status(401).json({ message: "Invalid email or password" });
@@ -129,6 +131,7 @@ export const refreshToken = async (req, res) => {
       });
       res.json({ message: "Token refreshed successfully" });
    } catch (error) {
-
+      console.log("Error in refreshToken controller", error.message);
+      res.status(500).json({ message: "Server error", error: error.message });
    }
 }
